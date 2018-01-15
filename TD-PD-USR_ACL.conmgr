@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="TD-PD-USR_ACL"
+  DTS:DTSID="{CF712F04-AF96-4E27-8097-C47248C1C418}"
+  DTS:CreationName="ODBC">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Dsn=TD-PD-USR_ACL;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

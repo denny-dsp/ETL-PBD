@@ -1,0 +1,2250 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/30/2017 2:27:31 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="PC997123AIP29"
+  DTS:CreatorName="INTRANET\812060577"
+  DTS:DTSID="{18FDB9CF-7EC2-4397-BCCF-26FB4EAAD1B6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="12.0.4100.1"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="PS_TRX_SURAT_HDR_NODEL"
+  DTS:PackageType="5"
+  DTS:VersionBuild="63"
+  DTS:VersionGUID="{CE08E4B0-1036-47DE-BFE1-E12C1A288D8B}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{ECD9AD39-1466-4087-A95A-0933756C5091}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;call &quot; + @[$Project::DBUSR]  + &quot;.SP_DBCORE_CLEAN('&quot; + @[$Project::DBTMP] + &quot;','&quot; + @[User::TblName]  +&quot;', NULL)&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CleanTable">
+      <DTS:VariableValue
+        DTS:DataType="8">call DBDEV_TTKI.SP_DBCORE_CLEAN('DBDEV_TTKI','PS_TRX_SURAT_HDR', NULL)</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7FBC6EDC-8F6D-421C-827A-51D540C91751}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;select TO_CHAR(MAX(MAXSTARTDATE), 'YYYY-MM-DD HH24:MI:SS') last_date from &quot;+ @[$Project::DBLOG]  + &quot;.dw_sysloadlog_core &#xA;where sourcetable = '&quot; + @[User::TblName]  +&quot;' AND STATUS = 'SUKSES';&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="GetLastUpdate">
+      <DTS:VariableValue
+        DTS:DataType="8">select TO_CHAR(MAX(MAXSTARTDATE), 'YYYY-MM-DD HH24:MI:SS') last_date from DBDEV_TTKI.dw_sysloadlog_core 
+where sourcetable = 'PS_TRX_SURAT_HDR' AND STATUS = 'SUKSES';</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{02FA4AA1-6ED3-40E6-AB57-2FC932C1592F}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;call &quot; + @[$Project::DBUSR]  + &quot;.SP_CORE_INC(&#xA;'&quot; + @[$Project::DBNAME]  + &quot;','&quot; + @[User::TblName]  +&quot;','&quot; + @[User::KeyColumn]  +&quot;',O_NEW, O_UPDATE);&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IncProc">
+      <DTS:VariableValue
+        DTS:DataType="8">call DBDEV_TTKI.SP_CORE_INC(
+'DBDEV_TTKI','PS_TRX_SURAT_HDR','ID_TRX_SURAT_HDR',O_NEW, O_UPDATE);</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{18305F0E-3B6D-4B1A-8C4C-445F4DDE3CC7}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="KeyColumn">
+      <DTS:VariableValue
+        DTS:DataType="8">ID_TRX_SURAT_HDR</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C3760519-1A01-4AB4-98CD-EFA01C5B83DF}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::MaxDate] == &quot;&quot; ? &quot;call &quot; + @[$Project::DBUSR]  + &quot;.DW_SYSENDLOAD_CORE_SP(&quot; + @[User::LogID] + &quot;, &quot; + @[User::ROWSRC]  + &quot;, &quot; + (DT_STR, 15, 1252) @[User::RowINS] + &quot;, &quot; + (DT_STR, 15, 1252) @[User::ROWUPDT] + &quot;, 0, '&quot; + @[User::MaxUpdateDate] + &quot;')&quot; : &quot;call &quot; + @[$Project::DBUSR]  + &quot;.DW_SYSENDLOAD_CORE_SP(&quot; + @[User::LogID] + &quot;, &quot; + @[User::ROWSRC]  + &quot;, &quot;+ (DT_STR, 15, 1252) @[User::RowINS] + &quot;, &quot; + (DT_STR, 15, 1252) @[User::ROWUPDT] + &quot;, 0, '&quot; + @[User::MaxDate] + &quot;')&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="LogEnd">
+      <DTS:VariableValue
+        DTS:DataType="8">call DBDEV_TTKI.DW_SYSENDLOAD_CORE_SP(, , 0, 0, 0, '')</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D2E55A60-DC48-4E2B-93C4-5B19493AAE45}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="LogID">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A56E591E-A0F6-4076-86A2-AF905D600040}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;call &quot; + @[$Project::DBUSR]  + &quot;.DW_SYSSTARTLOAD_CORE_SP('INC_&quot; + @[User::TblName] + &quot;', 'SIDJP_CORE', '&quot; + @[User::TblName] + &quot;', o_LOG_ID);&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="LogInit">
+      <DTS:VariableValue
+        DTS:DataType="8">call DBDEV_TTKI.DW_SYSSTARTLOAD_CORE_SP('INC_PS_TRX_SURAT_HDR', 'SIDJP_CORE', 'PS_TRX_SURAT_HDR', o_LOG_ID);</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{54F23254-76E7-4EB9-81DC-5A38951BEB7A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MaxDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D590220E-1DDD-4277-96AD-2A710877C84D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MaxUpdateDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1657CF40-12FE-45CF-B4DE-B6C54C6473F6}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowINS">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9FCF122C-76AE-417E-9C25-6A2BAC894EE8}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ROWSRC">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A26163F8-C5AA-4A64-8379-B58FBCCC2FB9}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ROWUPDT">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6466375F-E190-4169-9B80-CF54656A9CA0}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;select count(1), to_char(max(last_update_date),'YYYY-MM-DD HH24:MI:SS') from &quot; + @[User::TblName]  +&quot; where last_update_date between TO_DATE('&quot; +   @[User::MaxUpdateDate] +&quot;', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SELSRC">
+      <DTS:VariableValue
+        DTS:DataType="8">select count(1), to_char(max(last_update_date),'YYYY-MM-DD HH24:MI:SS') from PS_TRX_SURAT_HDR where last_update_date between TO_DATE('', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5837B8AE-E8F7-4649-B157-2E116CBA3786}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="TblName">
+      <DTS:VariableValue
+        DTS:DataType="8">PS_TRX_SURAT_HDR</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\PNG PS_TRX_SURAT_HDR"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{4642A41E-CE8C-48EE-BEB7-2C4F423C9960}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="PNG PS_TRX_SURAT_HDR">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR\CLEAN PS_TRX_SURAT_HDR"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{CEF0B637-9640-45DB-B8F3-64ED7FEA1102}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="CLEAN PS_TRX_SURAT_HDR"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::CleanTable" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR\Count Row Source"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{F41E5C0F-13D3-44CD-AD48-202F4596DBF6}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Count Row Source"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{80A77D78-7913-467D-8C1B-821972F58A02}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::SELSRC"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::ROWSRC" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="1"
+                SQLTask:DtsVariableName="User::MaxDate" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR\Get Last Update Date"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Get Last Update Date"
+          DTS:DTSID="{F775FEE0-2077-43CA-A057-19A2352CFFDC}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Get Last Update Date"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::GetLastUpdate"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::MaxUpdateDate" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR\INC_PROCESS"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{3503C863-999B-49AB-9157-F83FA114576A}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="INC_PROCESS"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::IncProc"
+              SQLTask:ResultType="ResultSetType_SingleRow"
+              SQLTask:TypeConversionMode="None" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::RowINS" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="1"
+                SQLTask:DtsVariableName="User::ROWUPDT" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR\Log Initial"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{33F50C29-1881-4DFE-BF66-B8984CC03E25}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Log Initial"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::LogInit"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LogID" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR\Log Success"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{EC2A4FDD-BEFA-4F3A-94A5-342E211E5FEF}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Log Success"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::LogEnd" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DelayValidation="True"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{05a3768d-e42e-4801-80c8-a9a23a175bf4}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="PS_TRX_SURAT_HDR"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="[TERA PS_TRX_SURAT_HDR].[TableName]">@[$Project::DBTMP] + "." +  @[User::TblName] + "_I"</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="[ORA PS_TRX_SURAT_HDR].[SqlCommand]">"SELECT ID_TRX_SURAT_HDR, ID_CABANG, LU_STATUS_KIRIM, NM_PENGIRIM, TGL_DITERIMA, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY, FG_COPIED, NAMA_WP, ALAMAT_WP, SRC_ID_TRX_SURAT_HDR, SRC_KPP,
+to_CHAR(SYSDATE,'YYYY-MM-DD') DW_START_DATE, to_DATE('9999-12-31','YYYY-MM-DD') DW_END_DATE, '0' DW_RECORD_DELETED_FLAG,  'MIGRASI-INC-CORE-PLY' DW_PROCESS_ID, 'MIGRASI-CORE-INC' DW_USER_ID, NULL DW_UPDATE_PROCESS_ID, NULL DW_UPDATE_USER_ID
+FROM PS_TRX_SURAT_HDR WHERE LAST_UPDATE_DATE between TO_DATE('" +   @[User::MaxUpdateDate] +"', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion"
+                  componentClassID="Microsoft.DataConvert"
+                  contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Data Conversion"
+                  name="Data Conversion"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input]"
+                      name="Data Conversion Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[ID_TRX_SURAT_HDR]"
+                          cachedDataType="numeric"
+                          cachedName="ID_TRX_SURAT_HDR"
+                          cachedPrecision="38"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_TRX_SURAT_HDR]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[ID_CABANG]"
+                          cachedDataType="numeric"
+                          cachedName="ID_CABANG"
+                          cachedPrecision="38"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_CABANG]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[TGL_DITERIMA]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="TGL_DITERIMA"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[TGL_DITERIMA]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[CREATION_DATE]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CREATION_DATE"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATION_DATE]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[LAST_UPDATE_DATE]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="LAST_UPDATE_DATE"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[CREATED_BY]"
+                          cachedDataType="numeric"
+                          cachedName="CREATED_BY"
+                          cachedPrecision="38"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATED_BY]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[LAST_UPDATED_BY]"
+                          cachedDataType="numeric"
+                          cachedName="LAST_UPDATED_BY"
+                          cachedPrecision="38"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[SRC_ID_TRX_SURAT_HDR]"
+                          cachedDataType="numeric"
+                          cachedName="SRC_ID_TRX_SURAT_HDR"
+                          cachedPrecision="38"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[SRC_ID_TRX_SURAT_HDR]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[DW_START_DATE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="DW_START_DATE"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_START_DATE]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[DW_END_DATE]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DW_END_DATE"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_END_DATE]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[DW_RECORD_DELETED_FLAG]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="DW_RECORD_DELETED_FLAG"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[DW_UPDATE_PROCESS_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedName="DW_UPDATE_PROCESS_ID"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input].Columns[DW_UPDATE_USER_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedName="DW_UPDATE_USER_ID"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output]"
+                      exclusionGroup="1"
+                      name="Data Conversion Output"
+                      synchronousInputId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[ID_TRX_SURAT_HDR_CONV]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[ID_TRX_SURAT_HDR_CONV]"
+                          name="ID_TRX_SURAT_HDR_CONV"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_TRX_SURAT_HDR]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[ID_CABANG_CONV]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[ID_CABANG_CONV]"
+                          name="ID_CABANG_CONV"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_CABANG]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[TGL_DITERIMA_DT]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[TGL_DITERIMA_DT]"
+                          name="TGL_DITERIMA_DT"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[TGL_DITERIMA]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[CREATION_DATE_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="26"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[CREATION_DATE_TS]"
+                          name="CREATION_DATE_TS"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATION_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_DATE_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="26"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_DATE_TS]"
+                          name="LAST_UPDATE_DATE_TS"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[CREATED_BY_CONV]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[CREATED_BY_CONV]"
+                          name="CREATED_BY_CONV"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATED_BY]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATED_BY_CONV]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATED_BY_CONV]"
+                          name="LAST_UPDATED_BY_CONV"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[SRC_ID_TRX_SURAT_HDR_CONV]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[SRC_ID_TRX_SURAT_HDR_CONV]"
+                          name="SRC_ID_TRX_SURAT_HDR_CONV"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[SRC_ID_TRX_SURAT_HDR]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_START_DATE_DT]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_START_DATE_DT]"
+                          name="DW_START_DATE_DT"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_START_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_END_DATE_DT]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_END_DATE_DT]"
+                          name="DW_END_DATE_DT"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_END_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_RECORD_DELETED_FLAG_I1]"
+                          dataType="i1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_RECORD_DELETED_FLAG_I1]"
+                          name="DW_RECORD_DELETED_FLAG_I1"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_PROCESS_ID_CONV]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_PROCESS_ID_CONV]"
+                          name="DW_UPDATE_PROCESS_ID_CONV"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_USER_ID_CONV]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="18"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_USER_ID_CONV]"
+                          name="DW_UPDATE_USER_ID_CONV"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Data Conversion Error Output"
+                      synchronousInputId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR"
+                  componentClassID="Attunity.SSISOraSrc"
+                  contactInfo="Oracle Source;Microsoft Connector for Oracle by Attunity; Attunity Ltd.; All Rights Reserved; http://www.attunity.com;5"
+                  description="Microsoft Oracle Source Component by Attunity"
+                  name="ORA PS_TRX_SURAT_HDR"
+                  usesDispositions="true"
+                  version="5">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="The name of the table to be fetched."
+                      expressionType="Notify"
+                      name="TableName"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      expressionType="Notify"
+                      name="SqlCommand">SELECT ID_TRX_SURAT_HDR, ID_CABANG, LU_STATUS_KIRIM, NM_PENGIRIM, TGL_DITERIMA, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY, FG_COPIED, NAMA_WP, ALAMAT_WP, SRC_ID_TRX_SURAT_HDR, SRC_KPP,
+to_CHAR(SYSDATE,'YYYY-MM-DD') DW_START_DATE, to_DATE('9999-12-31','YYYY-MM-DD') DW_END_DATE, '0' DW_RECORD_DELETED_FLAG,  'MIGRASI-INC-CORE-PLY' DW_PROCESS_ID, 'MIGRASI-CORE-INC' DW_USER_ID, NULL DW_UPDATE_PROCESS_ID, NULL DW_UPDATE_USER_ID
+FROM PS_TRX_SURAT_HDR WHERE LAST_UPDATE_DATE between TO_DATE('', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of rows fetched in a batch."
+                      expressionType="Notify"
+                      name="BatchSize">100</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Number of pre-fetched rows."
+                      expressionType="Notify"
+                      name="PrefetchCount">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines the chunk size allocation for LOB columns"
+                      expressionType="Notify"
+                      name="LobChunkSize">32768</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">1</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Connections[MSOraConnection]"
+                      connectionManagerID="{962C1EAB-5667-46F3-9AA8-ECA3183CC392}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[ORA_SIDJPREP]"
+                      description="The Oracle runtime connection"
+                      name="MSOraConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output]"
+                      errorRowDisposition="FailComponent"
+                      name="Oracle Source Output"
+                      truncationRowDisposition="FailComponent">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_TRX_SURAT_HDR]"
+                          dataType="numeric"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ID_TRX_SURAT_HDR]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_TRX_SURAT_HDR]"
+                          name="ID_TRX_SURAT_HDR"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_CABANG]"
+                          dataType="numeric"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ID_CABANG]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ID_CABANG]"
+                          name="ID_CABANG"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LU_STATUS_KIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LU_STATUS_KIRIM]"
+                          length="20"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LU_STATUS_KIRIM]"
+                          name="LU_STATUS_KIRIM" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[NM_PENGIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[NM_PENGIRIM]"
+                          length="100"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[NM_PENGIRIM]"
+                          name="NM_PENGIRIM" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[TGL_DITERIMA]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[TGL_DITERIMA]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[TGL_DITERIMA]"
+                          name="TGL_DITERIMA" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATION_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[CREATION_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATION_DATE]"
+                          name="CREATION_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATED_BY]"
+                          dataType="numeric"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[CREATED_BY]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[CREATED_BY]"
+                          name="CREATED_BY"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]"
+                          name="LAST_UPDATE_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]"
+                          dataType="numeric"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATED_BY]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]"
+                          name="LAST_UPDATED_BY"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[FG_COPIED]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[FG_COPIED]"
+                          length="1"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[FG_COPIED]"
+                          name="FG_COPIED" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[NAMA_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[NAMA_WP]"
+                          length="255"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[NAMA_WP]"
+                          name="NAMA_WP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ALAMAT_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ALAMAT_WP]"
+                          length="255"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ALAMAT_WP]"
+                          name="ALAMAT_WP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[SRC_ID_TRX_SURAT_HDR]"
+                          dataType="numeric"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[SRC_ID_TRX_SURAT_HDR]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[SRC_ID_TRX_SURAT_HDR]"
+                          name="SRC_ID_TRX_SURAT_HDR"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[SRC_KPP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[SRC_KPP]"
+                          length="10"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[SRC_KPP]"
+                          name="SRC_KPP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_START_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_START_DATE]"
+                          length="10"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_START_DATE]"
+                          name="DW_START_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_END_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_END_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_END_DATE]"
+                          name="DW_END_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          length="1"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_USER_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]"
+                          name="DW_UPDATE_USER_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_PROCESS_ID]"
+                          length="20"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_PROCESS_ID]"
+                          name="DW_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_USER_ID]"
+                          length="16"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_USER_ID]"
+                          name="DW_USER_ID" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ID_TRX_SURAT_HDR]"
+                          dataType="r8"
+                          name="ID_TRX_SURAT_HDR" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ID_CABANG]"
+                          dataType="r8"
+                          name="ID_CABANG" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LU_STATUS_KIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="LU_STATUS_KIRIM" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[NM_PENGIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="NM_PENGIRIM" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[TGL_DITERIMA]"
+                          dataType="dbTimeStamp"
+                          name="TGL_DITERIMA" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[CREATION_DATE]"
+                          dataType="dbTimeStamp"
+                          name="CREATION_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[CREATED_BY]"
+                          dataType="r8"
+                          name="CREATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_DATE]"
+                          dataType="dbTimeStamp"
+                          name="LAST_UPDATE_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATED_BY]"
+                          dataType="r8"
+                          name="LAST_UPDATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[FG_COPIED]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="FG_COPIED" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[NAMA_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="NAMA_WP" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ALAMAT_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="ALAMAT_WP" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[SRC_ID_TRX_SURAT_HDR]"
+                          dataType="r8"
+                          name="SRC_ID_TRX_SURAT_HDR" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[SRC_KPP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="SRC_KPP" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_START_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="DW_START_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_END_DATE]"
+                          dataType="dbTimeStamp"
+                          name="DW_END_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="DW_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="16"
+                          name="DW_USER_ID" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          name="DW_UPDATE_USER_ID" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output]"
+                      isErrorOut="true"
+                      name="Oracle Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ID_TRX_SURAT_HDR]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ID_TRX_SURAT_HDR]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ID_TRX_SURAT_HDR]"
+                          name="ID_TRX_SURAT_HDR" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ID_CABANG]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ID_CABANG]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ID_CABANG]"
+                          name="ID_CABANG" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[LU_STATUS_KIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LU_STATUS_KIRIM]"
+                          length="20"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[LU_STATUS_KIRIM]"
+                          name="LU_STATUS_KIRIM" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[NM_PENGIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[NM_PENGIRIM]"
+                          length="100"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[NM_PENGIRIM]"
+                          name="NM_PENGIRIM" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[TGL_DITERIMA]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[TGL_DITERIMA]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[TGL_DITERIMA]"
+                          name="TGL_DITERIMA" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[CREATION_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[CREATION_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[CREATION_DATE]"
+                          name="CREATION_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[CREATED_BY]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[CREATED_BY]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[CREATED_BY]"
+                          name="CREATED_BY" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[LAST_UPDATE_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[LAST_UPDATE_DATE]"
+                          name="LAST_UPDATE_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[LAST_UPDATED_BY]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATED_BY]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[LAST_UPDATED_BY]"
+                          name="LAST_UPDATED_BY" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[FG_COPIED]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[FG_COPIED]"
+                          length="1"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[FG_COPIED]"
+                          name="FG_COPIED" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[NAMA_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[NAMA_WP]"
+                          length="255"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[NAMA_WP]"
+                          name="NAMA_WP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ALAMAT_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[ALAMAT_WP]"
+                          length="255"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ALAMAT_WP]"
+                          name="ALAMAT_WP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[SRC_ID_TRX_SURAT_HDR]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[SRC_ID_TRX_SURAT_HDR]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[SRC_ID_TRX_SURAT_HDR]"
+                          name="SRC_ID_TRX_SURAT_HDR" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[SRC_KPP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[SRC_KPP]"
+                          length="10"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[SRC_KPP]"
+                          name="SRC_KPP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_START_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_START_DATE]"
+                          length="10"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_START_DATE]"
+                          name="DW_START_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_END_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_END_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_END_DATE]"
+                          name="DW_END_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          length="1"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_USER_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_USER_ID]"
+                          name="DW_UPDATE_USER_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_PROCESS_ID]"
+                          length="20"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_PROCESS_ID]"
+                          name="DW_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].ExternalColumns[DW_USER_ID]"
+                          length="16"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Error Output].Columns[DW_USER_ID]"
+                          name="DW_USER_ID" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR"
+                  componentClassID="Attunity.SSISTeraDst"
+                  contactInfo="Teradata Destination;Microsoft Connector for Teradata by Attunity; Attunity Ltd.; All Rights Reserved; http://www.attunity.com;5"
+                  description="Microsoft Teradata Destination Component by Attunity"
+                  name="TERA PS_TRX_SURAT_HDR"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="5">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Apply fast load"
+                      name="FastLoad">true</property>
+                    <property
+                      dataType="System.String"
+                      description="Destination table"
+                      expressionType="Notify"
+                      name="TableName">DBDEV_TTKI.PS_TRX_SURAT_HDR_I</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Data transfer block size."
+                      expressionType="Notify"
+                      name="BlockSize">64330</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="SQL requests, responses and data encryption."
+                      expressionType="Notify"
+                      name="DataEncryption">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Minimum number of sessions required."
+                      expressionType="Notify"
+                      name="MinSessions">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum number of sessions to log on."
+                      expressionType="Notify"
+                      name="MaxSessions">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of hours to continue trying to log on when the maximum number of load jobs is already running on the Teradata Database."
+                      expressionType="Notify"
+                      name="TenacityHours">4</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of minutes to pause before retrying to log on when the maximum number of load jobs is already running on the Teradata Database."
+                      expressionType="Notify"
+                      name="TenacitySleep">6</property>
+                    <property
+                      dataType="System.String"
+                      description="A specifier used for naming error and log tables."
+                      expressionType="Notify"
+                      name="ErrorTableName"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum errors allowed."
+                      expressionType="Notify"
+                      name="MaxErrors">0</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Always drop error table(s)."
+                      expressionType="Notify"
+                      name="AlwaysDropErrorTable">true</property>
+                    <property
+                      dataType="System.String"
+                      description="A trace file name. Setting a value for this property enables TPT detailed tracing."
+                      expressionType="Notify"
+                      name="DetailedTracingFile"></property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Use maximal character buffers allocation factor. Used when 'Export Width Table ID' = 'Maximum Defaults'."
+                      expressionType="Notify"
+                      name="ExtendedStringColumnsAllocation">false</property>
+                    <property
+                      dataType="System.String"
+                      description="A user-defined query band expression."
+                      expressionType="Notify"
+                      name="QueryBandSessionInfo"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="The output buffer size (KB) used for sending Load parcels."
+                      expressionType="Notify"
+                      name="BufferSize">64</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates which type of Load method is used. True stands for ‘Process Buffered Rows’. False indicates ‘Process Row By Row’."
+                      expressionType="Notify"
+                      name="BufferMode">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum size of a data buffer when ‘Buffer mode’ is applied. Value must be large enough to hold at least one data row (including 8 overhead bytes per row at most)."
+                      expressionType="Notify"
+                      name="BufferMaxSize">64260</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of request buffers."
+                      expressionType="Notify"
+                      name="Buffers">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Array support option for DMLGroups."
+                      expressionType="Notify"
+                      name="ArraySupport">true</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Use robust restart logic for recovery and restart operations."
+                      expressionType="Notify"
+                      name="Robust">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the number of statements to pack into a multiple-statement request."
+                      expressionType="Notify"
+                      name="Pack">20</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Triggers the Stream driver to dynamically determine the maximum possible pack factor for the current Stream job."
+                      expressionType="Notify"
+                      name="PackMaximum">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Overrides the normal replication services controls."
+                      name="ReplicationOverride"
+                      typeConverter="ReplicationOverride">2</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the types of diagnostic messages written by each instance of the driver to an external log file. The diagnostic trace function provides more detailed information (including the version number) in the log file to aid in problem tracking and diagnosis."
+                      name="DetailedTracingLevel"
+                      typeConverter="DetailedTracingLevel">1</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Connections[MSTeraConnection]"
+                      connectionManagerID="{928F4B84-3B3F-482F-B553-04353D91075A}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[tera_conn_dev]"
+                      description="The Teradata runtime connection"
+                      name="MSTeraConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="Teradata Destination Input"
+                      truncationRowDisposition="FailComponent">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[LU_STATUS_KIRIM]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="LU_STATUS_KIRIM"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LU_STATUS_KIRIM]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[LU_STATUS_KIRIM]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[NM_PENGIRIM]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="NM_PENGIRIM"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[NM_PENGIRIM]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[NM_PENGIRIM]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[FG_COPIED]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="FG_COPIED"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[FG_COPIED]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[FG_COPIED]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[NAMA_WP]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="NAMA_WP"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[NAMA_WP]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[NAMA_WP]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[ALAMAT_WP]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="ALAMAT_WP"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ALAMAT_WP]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[ALAMAT_WP]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[SRC_KPP]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="SRC_KPP"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[SRC_KPP]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[SRC_KPP]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[DW_PROCESS_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="DW_PROCESS_ID"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_PROCESS_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_PROCESS_ID]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[DW_USER_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="16"
+                          cachedName="DW_USER_ID"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_USER_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output].Columns[DW_USER_ID]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[ID_CABANG_CONV]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="40"
+                          cachedName="ID_CABANG_CONV"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ID_CABANG]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[ID_CABANG_CONV]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[TGL_DITERIMA_DT]"
+                          cachedDataType="dbDate"
+                          cachedName="TGL_DITERIMA_DT"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[TGL_DITERIMA]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[TGL_DITERIMA_DT]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[CREATION_DATE_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="26"
+                          cachedName="CREATION_DATE_TS"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[CREATION_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[CREATION_DATE_TS]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[LAST_UPDATE_DATE_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="26"
+                          cachedName="LAST_UPDATE_DATE_TS"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_DATE_TS]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[CREATED_BY_CONV]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="40"
+                          cachedName="CREATED_BY_CONV"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[CREATED_BY]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[CREATED_BY_CONV]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[LAST_UPDATED_BY_CONV]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="40"
+                          cachedName="LAST_UPDATED_BY_CONV"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATED_BY]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATED_BY_CONV]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[SRC_ID_TRX_SURAT_HDR_CONV]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="40"
+                          cachedName="SRC_ID_TRX_SURAT_HDR_CONV"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[SRC_ID_TRX_SURAT_HDR]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[SRC_ID_TRX_SURAT_HDR_CONV]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[DW_START_DATE_DT]"
+                          cachedDataType="dbDate"
+                          cachedName="DW_START_DATE_DT"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_START_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_START_DATE_DT]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[DW_END_DATE_DT]"
+                          cachedDataType="dbDate"
+                          cachedName="DW_END_DATE_DT"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_END_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_END_DATE_DT]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[DW_RECORD_DELETED_FLAG_I1]"
+                          cachedDataType="i1"
+                          cachedName="DW_RECORD_DELETED_FLAG_I1"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_RECORD_DELETED_FLAG_I1]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[DW_UPDATE_PROCESS_ID_CONV]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="DW_UPDATE_PROCESS_ID_CONV"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_PROCESS_ID_CONV]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[DW_UPDATE_USER_ID_CONV]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="18"
+                          cachedName="DW_UPDATE_USER_ID_CONV"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_USER_ID]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_USER_ID_CONV]" />
+                        <inputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].Columns[ID_TRX_SURAT_HDR_CONV]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="40"
+                          cachedName="ID_TRX_SURAT_HDR_CONV"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ID_TRX_SURAT_HDR]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output].Columns[ID_TRX_SURAT_HDR_CONV]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ID_TRX_SURAT_HDR]"
+                          codePage="1252"
+                          dataType="str"
+                          length="40"
+                          name="ID_TRX_SURAT_HDR" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ID_CABANG]"
+                          codePage="1252"
+                          dataType="str"
+                          length="40"
+                          name="ID_CABANG" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LU_STATUS_KIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="LU_STATUS_KIRIM" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[NM_PENGIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="NM_PENGIRIM" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[TGL_DITERIMA]"
+                          dataType="dbDate"
+                          name="TGL_DITERIMA" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[CREATION_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="26"
+                          name="CREATION_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[CREATED_BY]"
+                          codePage="1252"
+                          dataType="str"
+                          length="40"
+                          name="CREATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="26"
+                          name="LAST_UPDATE_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATED_BY]"
+                          codePage="1252"
+                          dataType="str"
+                          length="40"
+                          name="LAST_UPDATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[FG_COPIED]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="FG_COPIED" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[NAMA_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="NAMA_WP" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ALAMAT_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="ALAMAT_WP" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[SRC_ID_TRX_SURAT_HDR]"
+                          codePage="1252"
+                          dataType="str"
+                          length="40"
+                          name="SRC_ID_TRX_SURAT_HDR" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[SRC_KPP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="SRC_KPP" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_START_DATE]"
+                          dataType="dbDate"
+                          name="DW_START_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_END_DATE]"
+                          dataType="dbDate"
+                          name="DW_END_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          dataType="i1"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="DW_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="18"
+                          name="DW_USER_ID" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="18"
+                          name="DW_UPDATE_USER_ID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output]"
+                      isErrorOut="true"
+                      name="Teradata Destination Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ID_TRX_SURAT_HDR]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ID_TRX_SURAT_HDR]"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ID_TRX_SURAT_HDR]"
+                          name="ID_TRX_SURAT_HDR" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ID_CABANG]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ID_CABANG]"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ID_CABANG]"
+                          name="ID_CABANG" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[LU_STATUS_KIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LU_STATUS_KIRIM]"
+                          length="20"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[LU_STATUS_KIRIM]"
+                          name="LU_STATUS_KIRIM" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[NM_PENGIRIM]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[NM_PENGIRIM]"
+                          length="100"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[NM_PENGIRIM]"
+                          name="NM_PENGIRIM" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[TGL_DITERIMA]"
+                          dataType="dbDate"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[TGL_DITERIMA]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[TGL_DITERIMA]"
+                          name="TGL_DITERIMA" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[CREATION_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[CREATION_DATE]"
+                          length="26"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[CREATION_DATE]"
+                          name="CREATION_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[CREATED_BY]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[CREATED_BY]"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[CREATED_BY]"
+                          name="CREATED_BY" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATE_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_DATE]"
+                          length="26"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATE_DATE]"
+                          name="LAST_UPDATE_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATED_BY]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATED_BY]"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATED_BY]"
+                          name="LAST_UPDATED_BY" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[FG_COPIED]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[FG_COPIED]"
+                          length="1"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[FG_COPIED]"
+                          name="FG_COPIED" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[NAMA_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[NAMA_WP]"
+                          length="255"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[NAMA_WP]"
+                          name="NAMA_WP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ALAMAT_WP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[ALAMAT_WP]"
+                          length="255"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ALAMAT_WP]"
+                          name="ALAMAT_WP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[SRC_ID_TRX_SURAT_HDR]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[SRC_ID_TRX_SURAT_HDR]"
+                          length="40"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[SRC_ID_TRX_SURAT_HDR]"
+                          name="SRC_ID_TRX_SURAT_HDR" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[SRC_KPP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[SRC_KPP]"
+                          length="10"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[SRC_KPP]"
+                          name="SRC_KPP" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_START_DATE]"
+                          dataType="dbDate"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_START_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_START_DATE]"
+                          name="DW_START_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_END_DATE]"
+                          dataType="dbDate"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_END_DATE]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_END_DATE]"
+                          name="DW_END_DATE" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          dataType="i1"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_PROCESS_ID]"
+                          length="30"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_PROCESS_ID]"
+                          name="DW_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_USER_ID]"
+                          length="18"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_USER_ID]"
+                          name="DW_USER_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          length="30"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_USER_ID]"
+                          length="18"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_USER_ID]"
+                          name="DW_UPDATE_USER_ID" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Outputs[Teradata Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR.Paths[Data Conversion Output]"
+                  endId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR.Inputs[Teradata Destination Input]"
+                  name="Data Conversion Output"
+                  startId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Outputs[Data Conversion Output]" />
+                <path
+                  refId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR.Paths[Oracle Source Output]"
+                  endId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Oracle Source Output"
+                  startId="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR.Outputs[Oracle Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{CF9F1AA1-502F-4B8B-ACC2-7F19ABB17720}"
+          DTS:From="Package\PNG PS_TRX_SURAT_HDR\Log Initial"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\PNG PS_TRX_SURAT_HDR\Get Last Update Date" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{BA5509EA-D3FF-449F-AB69-594500665FD7}"
+          DTS:From="Package\PNG PS_TRX_SURAT_HDR\CLEAN PS_TRX_SURAT_HDR"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{D91B4AED-7525-4699-A787-9A742D406FCC}"
+          DTS:From="Package\PNG PS_TRX_SURAT_HDR\Count Row Source"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\PNG PS_TRX_SURAT_HDR\CLEAN PS_TRX_SURAT_HDR" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{77357D93-B01E-4DD9-8EAB-A968E5351778}"
+          DTS:From="Package\PNG PS_TRX_SURAT_HDR\INC_PROCESS"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\PNG PS_TRX_SURAT_HDR\Log Success" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{1648BAF3-F13A-49FC-B2AA-53ED83E1DCE6}"
+          DTS:From="Package\PNG PS_TRX_SURAT_HDR\Get Last Update Date"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\PNG PS_TRX_SURAT_HDR\Count Row Source" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{870367A6-3BE4-4831-A718-91AD53712A02}"
+          DTS:From="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\PNG PS_TRX_SURAT_HDR\INC_PROCESS" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="215,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\CLEAN PS_TRX_SURAT_HDR"
+          TopLeft="346,131" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\Count Row Source"
+          TopLeft="220.75,31.5" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\Get Last Update Date"
+          TopLeft="89.0000000000001,129.75" />
+        <NodeLayout
+          Size="147,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\INC_PROCESS"
+          TopLeft="621,119.25" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\Log Initial"
+          TopLeft="27.25,42" />
+        <NodeLayout
+          Size="136,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\Log Success"
+          TopLeft="710.5,30" />
+        <NodeLayout
+          Size="181,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR"
+          TopLeft="451.166666666667,27.6666666666667" />
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint]"
+          TopLeft="90.25,84">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="88.7500000000001,45.75"
+              Start="0,0"
+              End="88.7500000000001,38.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.875" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.875"
+                    Point2="0,22.875"
+                    Point3="4,22.875" />
+                  <mssgle:LineSegment
+                    End="84.7500000000001,22.875" />
+                  <mssgle:CubicBezierSegment
+                    Point1="84.7500000000001,22.875"
+                    Point2="88.7500000000001,22.875"
+                    Point3="88.7500000000001,26.875" />
+                  <mssgle:LineSegment
+                    End="88.7500000000001,38.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 1]"
+          TopLeft="488,131">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="24.8333333333336,-61.3333333333333"
+              Start="0,0"
+              End="24.8333333333336,-53.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-26.614148638779" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-26.614148638779"
+                    Point2="0,-30.614148638779"
+                    Point3="4,-30.614148638779" />
+                  <mssgle:LineSegment
+                    End="20.8333333333336,-30.614148638779" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20.8333333333336,-30.614148638779"
+                    Point2="24.8333333333336,-30.614148638779"
+                    Point3="24.8333333333336,-34.614148638779" />
+                  <mssgle:LineSegment
+                    End="24.8333333333336,-53.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 2]"
+          TopLeft="330.083333333333,73.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="88.9166666666667,57.5"
+              Start="0,0"
+              End="88.9166666666667,50">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24.8272934269725" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24.8272934269725"
+                    Point2="0,28.8272934269725"
+                    Point3="4,28.8272934269725" />
+                  <mssgle:LineSegment
+                    End="84.9166666666667,28.8272934269725" />
+                  <mssgle:CubicBezierSegment
+                    Point1="84.9166666666667,28.8272934269725"
+                    Point2="88.9166666666667,28.8272934269725"
+                    Point3="88.9166666666667,32.8272934269725" />
+                  <mssgle:LineSegment
+                    End="88.9166666666667,50" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 3]"
+          TopLeft="694.5,119.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="84,-47.25"
+              Start="0,0"
+              End="84,-39.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-19.625" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-19.625"
+                    Point2="0,-23.625"
+                    Point3="4,-23.625" />
+                  <mssgle:LineSegment
+                    End="80,-23.625" />
+                  <mssgle:CubicBezierSegment
+                    Point1="80,-23.625"
+                    Point2="84,-23.625"
+                    Point3="84,-27.625" />
+                  <mssgle:LineSegment
+                    End="84,-39.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 4]"
+          TopLeft="207.666666666667,129.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="69.7499999999999,-56.25"
+              Start="0,0"
+              End="69.7499999999999,-48.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-24.0992411356797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-24.0992411356797"
+                    Point2="0,-28.0992411356797"
+                    Point3="4,-28.0992411356797" />
+                  <mssgle:LineSegment
+                    End="65.7499999999999,-28.0992411356797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="65.7499999999999,-28.0992411356797"
+                    Point2="69.7499999999999,-28.0992411356797"
+                    Point3="69.7499999999999,-32.0992411356797" />
+                  <mssgle:LineSegment
+                    End="69.7499999999999,-48.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR.PrecedenceConstraints[Constraint 5]"
+          TopLeft="570.5,69.6666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="100.833333333333,49.5833333333333"
+              Start="0,0"
+              End="100.833333333333,42.0833333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.7298307229578" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.7298307229578"
+                    Point2="0,24.7298307229578"
+                    Point3="4,24.7298307229578" />
+                  <mssgle:LineSegment
+                    End="96.833333333333,24.7298307229578" />
+                  <mssgle:CubicBezierSegment
+                    Point1="96.833333333333,24.7298307229578"
+                    Point2="100.833333333333,24.7298307229578"
+                    Point3="100.833333333333,28.7298307229578" />
+                  <mssgle:LineSegment
+                    End="100.833333333333,42.0833333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="866,228"
+          Size="866,271"
+          Id="Package\PNG PS_TRX_SURAT_HDR"
+          TopLeft="47.166666666667,29.6666666666667" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="204,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\ORA PS_TRX_SURAT_HDR"
+          TopLeft="55,68" />
+        <NodeLayout
+          Size="209,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR"
+          TopLeft="564,73" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\Data Conversion"
+          TopLeft="314,74" />
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR.Paths[Data Conversion Output]"
+          TopLeft="470,94.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="94,0"
+              Start="0,0"
+              End="86.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="86.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR.Paths[Oracle Source Output]"
+          TopLeft="259,92">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="55,0"
+              Start="0,0"
+              End="47.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="47.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\PNG PS_TRX_SURAT_HDR\PS_TRX_SURAT_HDR\TERA PS_TRX_SURAT_HDR">
+    <Properties>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

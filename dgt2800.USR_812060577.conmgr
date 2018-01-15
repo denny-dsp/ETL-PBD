@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="dgt2800.USR_812060577"
+  DTS:DTSID="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+  DTS:CreationName="ADO.NET:Teradata.Client.Provider.TdConnection, Teradata.Client.Provider, Version=15.11.0.0, Culture=neutral, PublicKeyToken=76b417ee2e04956c">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=dgt2800;User Id=usr_etl;Connection Timeout=90;Persist Security Info=True;Session Character Set=UTF8;Max Pool Size=10;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAI0NUpiz2TUqvSNSdYpH/vQAAAAACAAAAAAADZgAAwAAAABAAAACyoEcHwNWZpLhyvCMqMPpoAAAAAASAAACgAAAAEAAAAOaFj4M1q9U4heVKFgxvsr94AAAArunnYT9AXv+XFvUgKRdW5TnhjAhS1jKIb+8QsjBESFyNY4bnStoN1Q5nSHW5vlCSiBPIRyoLfRkvsphH96waLMNEo2AVRU7Ivesal8vZC2AX0oMMtMxyDK6rlZXqvUnf0xb2aPAv0nLKZUugXQ3JnU1NyL1UvKXCFAAAAPsxKr1vwB6wpJHggxV/9DSQ+Czm</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

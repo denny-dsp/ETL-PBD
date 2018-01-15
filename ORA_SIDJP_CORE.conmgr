@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="ORA_SIDJPREP"
+  DTS:DTSID="{962C1EAB-5667-46F3-9AA8-ECA3183CC392}"
+  DTS:CreationName="MSORA">
+  <DTS:ObjectData>
+    <OracleXMLPackage>
+      <OraConnectionString>SERVER=SIDJP_REP;USERNAME=sidjprep;ORACLEHOME=;ORACLEHOME64=;WINAUTH=0</OraConnectionString>
+      <OraRetain>False</OraRetain>
+      <OraInitialCatalog></OraInitialCatalog>
+      <OraServerName>SIDJP_REP</OraServerName>
+      <OraUserName>sidjprep</OraUserName>
+      <OraOracleHome></OraOracleHome>
+      <OraOracleHome64></OraOracleHome64>
+      <OraWinAuthentication>False</OraWinAuthentication>
+      <OraEnableDetailedTracing>False</OraEnableDetailedTracing>
+      <OraPassword
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAI0NUpiz2TUqvSNSdYpH/vQAAAAACAAAAAAADZgAAwAAAABAAAABgNYexWBsPCs8p9oJ0qgwRAAAAAASAAACgAAAAEAAAALCzQV17vtVi4z3Ljw0PdMY4AAAA5LcIwBucgA1znADqv3Gm4wnr/rO8yu+YywqHea3lIYQP8WAK9YQoftwttng7o/lTQudFPuqGdXwUAAAAXJ/5BJ+PYFc5kj6ixrDA51FDSsA=</OraPassword>
+    </OracleXMLPackage>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

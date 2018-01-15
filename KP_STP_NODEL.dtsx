@@ -1,0 +1,2854 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/30/2017 2:27:31 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="PC997123AIP29"
+  DTS:CreatorName="INTRANET\812060577"
+  DTS:DTSID="{D7ED5C49-4D10-488E-96DB-488B15D3942D}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="12.0.4100.1"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="KP_STP_NODEL"
+  DTS:PackageType="5"
+  DTS:VersionBuild="64"
+  DTS:VersionGUID="{E88E2717-CFF5-46C8-84C6-A550E0D5EEC1}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BDF83C81-6B19-4791-B353-96A7C42C2DA7}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;call &quot; + @[$Project::DBUSR]  + &quot;.SP_DBCORE_CLEAN('&quot; + @[$Project::DBTMP] + &quot;','&quot; + @[User::TblName]  +&quot;', NULL)&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CleanTable">
+      <DTS:VariableValue
+        DTS:DataType="8">call usr_etl_sidjp.SP_DBCORE_CLEAN('DBTMP_SIDJP','KP_STP', NULL)</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{98A2CFB1-92AE-4255-9BD3-41176ECAB60C}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;select TO_CHAR(MAX(MAXSTARTDATE), 'YYYY-MM-DD HH24:MI:SS') last_date from &quot;+ @[$Project::DBLOG]  + &quot;.dw_sysloadlog_core &#xA;where sourcetable = '&quot; + @[User::TblName]  +&quot;' AND STATUS = 'SUKSES';&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="GetLastUpdate">
+      <DTS:VariableValue
+        DTS:DataType="8">select TO_CHAR(MAX(MAXSTARTDATE), 'YYYY-MM-DD HH24:MI:SS') last_date from DBLOG_SRI.dw_sysloadlog_core 
+where sourcetable = 'KP_STP' AND STATUS = 'SUKSES';</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{47656EFA-BEFF-433F-97FE-A688379CD5E2}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;call &quot; + @[$Project::DBUSR]  + &quot;.SP_CORE_INC(&#xA;'&quot; + @[$Project::DBNAME]  + &quot;','&quot; + @[User::TblName]  +&quot;','&quot; + @[User::KeyColumn]  +&quot;',O_NEW, O_UPDATE);&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="IncProc">
+      <DTS:VariableValue
+        DTS:DataType="8">call usr_etl_sidjp.SP_CORE_INC(
+'DBSRI_SIDJP','KP_STP','ID_STP',O_NEW, O_UPDATE);</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CDD456F5-5F72-4272-8C2F-55CBFAA8DD0D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="KeyColumn">
+      <DTS:VariableValue
+        DTS:DataType="8">ID_STP</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3485AECD-D1D3-440E-8C63-2BB0C52EEB68}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::MaxDate] == &quot;&quot; ? &quot;call &quot; + @[$Project::DBUSR]  + &quot;.DW_SYSENDLOAD_CORE_SP(&quot; + @[User::LogID] + &quot;, &quot; + @[User::ROWSRC]  + &quot;, &quot; + (DT_STR, 15, 1252) @[User::RowINS] + &quot;, &quot; + (DT_STR, 15, 1252) @[User::ROWUPDT] + &quot;, 0, '&quot; + @[User::MaxUpdateDate] + &quot;')&quot; : &quot;call &quot; + @[$Project::DBUSR]  + &quot;.DW_SYSENDLOAD_CORE_SP(&quot; + @[User::LogID] + &quot;, &quot; + @[User::ROWSRC]  + &quot;, &quot;+ (DT_STR, 15, 1252) @[User::RowINS] + &quot;, &quot; + (DT_STR, 15, 1252) @[User::ROWUPDT] + &quot;, 0, '&quot; + @[User::MaxDate] + &quot;')&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="LogEnd">
+      <DTS:VariableValue
+        DTS:DataType="8">call usr_etl_sidjp.DW_SYSENDLOAD_CORE_SP(, , 0, 0, 0, '')</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{75CF0AF3-C31F-4B81-920A-8502EAA1C673}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="LogID">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EB4F48A2-8D21-4E2D-B37C-CEDDD89C554B}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;call &quot; + @[$Project::DBUSR]  + &quot;.DW_SYSSTARTLOAD_CORE_SP('INC_&quot; + @[User::TblName] + &quot;', 'SIDJP_CORE', '&quot; + @[User::TblName] + &quot;', o_LOG_ID);&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="LogInit">
+      <DTS:VariableValue
+        DTS:DataType="8">call usr_etl_sidjp.DW_SYSSTARTLOAD_CORE_SP('INC_KP_STP', 'SIDJP_CORE', 'KP_STP', o_LOG_ID);</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7AC003E1-FACF-422B-8190-AF2EF05794AA}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MaxDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{108FEA7B-D363-461D-B320-E9CC6CC1DE41}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MaxUpdateDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F0DC882B-9973-464C-AF58-82542540BE65}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowINS">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{FE739686-9E0D-4B01-AB42-B5DE168249CA}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ROWSRC">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{E90D3970-C255-412E-B6D8-BA0AF7C2F4A5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ROWUPDT">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{4DC86A05-4B3E-4936-9447-988480688A2B}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;select count(1), to_char(max(last_update_date),'YYYY-MM-DD HH24:MI:SS') from &quot; + @[User::TblName]  +&quot; where last_update_date between TO_DATE('&quot; +   @[User::MaxUpdateDate] +&quot;', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SELSRC">
+      <DTS:VariableValue
+        DTS:DataType="8">select count(1), to_char(max(last_update_date),'YYYY-MM-DD HH24:MI:SS') from KP_STP where last_update_date between TO_DATE('', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5B718CA0-A331-470E-AA77-E8ECAA816BE0}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="TblName">
+      <DTS:VariableValue
+        DTS:DataType="8">KP_STP</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\KP_STP"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{3AA78D3B-19D8-4FD6-8C6A-8C1713C0B7EC}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="KP_STP">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\KP_STP\CLEAN TABLE"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{5660590E-C70E-4A64-B31A-A305B68B35DD}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="CLEAN TABLE"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::CleanTable" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\KP_STP\Count Row Source"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{896F450E-BCF9-48B1-B285-24FFF4D1BD61}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Count Row Source"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{80A77D78-7913-467D-8C1B-821972F58A02}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::SELSRC"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::ROWSRC" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="1"
+                SQLTask:DtsVariableName="User::MaxDate" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\KP_STP\Get Last Update Date"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Get Last Update Date"
+          DTS:DTSID="{120F5437-9612-485F-BCB9-E4B8AAFA2355}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Get Last Update Date"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::GetLastUpdate"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::MaxUpdateDate" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\KP_STP\INC_PROCESS"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{F6A0C303-B15D-4CFD-AD9F-76213DE2C762}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="INC_PROCESS"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::IncProc"
+              SQLTask:ResultType="ResultSetType_SingleRow"
+              SQLTask:TypeConversionMode="None" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::RowINS" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="1"
+                SQLTask:DtsVariableName="User::ROWUPDT" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\KP_STP\KP_STP"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{f4c1f8d2-2a0a-43ed-b8b1-fc3501547c71}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="KP_STP"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="[Teradata Destination].[TableName]">@[$Project::DBTMP] + "." +  @[User::TblName] + "_I"</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="[KP_STP].[SqlCommand]">"SELECT ID_STP, ID_CABANG, ID_JNS_PJK, NOMOR_STP, TGL_DOKUMEN, MASA_PJK, case when THN_PJK &gt; (select extract(year from sysdate) from dual)  then 9999
+         when THN_PJK &lt; 1945 then 0
+        else THN_PJK end THN_PJK, FG_STATUS, NILAI_TRANSAKSI, CURRENCY_CODE, ROUND(NILAI_KB,2) NILAI_KB, CURRENCY_KB, ID_KEPATUHAN, ID_MASALAH, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY, LAST_UPDATE_LOGIN, ID_KWJB, KETERANGAN, ROUND(NILAI_ANGSURAN,2) NILAI_ANGSURAN, ROUND(NILAI_BAYAR,2)  NILAI_BAYAR, CURRENCY_ANGSURAN, CURRENCY_BAYAR, ATTRIBUTE1, to_char(SYSDATE,'YYYY-MM-DD') DW_START_DATE, '9999-12-31' DW_END_DATE, '0' DW_RECORD_DELETED_FLAG,  'MIGRASI-INC-CORE-PNG' DW_PROCESS_ID, 'MIGRASI-CORE-INC' DW_USER_ID, NULL DW_UPDATE_PROCESS_ID, NULL DW_UPDATE_USER_ID FROM KP_STP WHERE LAST_UPDATE_DATE between TO_DATE('" +   @[User::MaxUpdateDate] +"', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\KP_STP\KP_STP\Data Conversion"
+                  componentClassID="Microsoft.DataConvert"
+                  contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Data Conversion"
+                  name="Data Conversion"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input]"
+                      name="Data Conversion Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[ID_JNS_PJK]"
+                          cachedDataType="r8"
+                          cachedName="ID_JNS_PJK"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_JNS_PJK]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[CREATED_BY]"
+                          cachedDataType="r8"
+                          cachedName="CREATED_BY"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATED_BY]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[CREATION_DATE]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="CREATION_DATE"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATION_DATE]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[LAST_UPDATE_DATE]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="LAST_UPDATE_DATE"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[LAST_UPDATED_BY]"
+                          cachedDataType="r8"
+                          cachedName="LAST_UPDATED_BY"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[LAST_UPDATE_LOGIN]"
+                          cachedDataType="r8"
+                          cachedName="LAST_UPDATE_LOGIN"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_LOGIN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[DW_START_DATE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="DW_START_DATE"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_START_DATE]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[DW_END_DATE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="DW_END_DATE"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_END_DATE]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[DW_RECORD_DELETED_FLAG]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="DW_RECORD_DELETED_FLAG"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[DW_UPDATE_PROCESS_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedName="DW_UPDATE_PROCESS_ID"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[DW_UPDATE_USER_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedName="DW_UPDATE_USER_ID"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[ID_STP]"
+                          cachedDataType="numeric"
+                          cachedName="ID_STP"
+                          cachedPrecision="38"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_STP]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[ID_CABANG]"
+                          cachedDataType="numeric"
+                          cachedName="ID_CABANG"
+                          cachedPrecision="38"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_CABANG]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[MASA_PJK]"
+                          cachedDataType="r8"
+                          cachedName="MASA_PJK"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[MASA_PJK]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[THN_PJK]"
+                          cachedDataType="numeric"
+                          cachedName="THN_PJK"
+                          cachedPrecision="4"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[THN_PJK]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[ID_KWJB]"
+                          cachedDataType="r8"
+                          cachedName="ID_KWJB"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KWJB]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[TGL_DOKUMEN]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="TGL_DOKUMEN"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[TGL_DOKUMEN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[ID_KEPATUHAN]"
+                          cachedDataType="r8"
+                          cachedName="ID_KEPATUHAN"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KEPATUHAN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[ID_MASALAH]"
+                          cachedDataType="numeric"
+                          cachedName="ID_MASALAH"
+                          cachedPrecision="38"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_MASALAH]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input].Columns[NILAI_TRANSAKSI]"
+                          cachedDataType="numeric"
+                          cachedName="NILAI_TRANSAKSI"
+                          cachedPrecision="38"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_TRANSAKSI]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output]"
+                      exclusionGroup="1"
+                      name="Data Conversion Output"
+                      synchronousInputId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[ID_JNS_PJK_I1]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[ID_JNS_PJK_I1]"
+                          name="ID_JNS_PJK_I1"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_JNS_PJK]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[CREATED_BY_I4]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[CREATED_BY_I4]"
+                          name="CREATED_BY_I4"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATED_BY]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[CREATION_DATE_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="26"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[CREATION_DATE_TS]"
+                          name="CREATION_DATE_TS"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATION_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_DATE_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="26"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_DATE_TS]"
+                          name="LAST_UPDATE_DATE_TS"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATED_BY_I4]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATED_BY_I4]"
+                          name="LAST_UPDATED_BY_I4"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_LOGIN_I4]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_LOGIN_I4]"
+                          name="LAST_UPDATE_LOGIN_I4"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_LOGIN]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_START_DATE_DT]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_START_DATE_DT]"
+                          name="DW_START_DATE_DT"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_START_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_END_DATE_DT]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_END_DATE_DT]"
+                          name="DW_END_DATE_DT"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_END_DATE]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_RECORD_DELETED_FLAG_I1]"
+                          dataType="i1"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_RECORD_DELETED_FLAG_I1]"
+                          name="DW_RECORD_DELETED_FLAG_I1"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_PROCESS_ID_STR]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="30"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_PROCESS_ID_STR]"
+                          name="DW_UPDATE_PROCESS_ID_STR"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_USER_ID_STR]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="18"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_USER_ID_STR]"
+                          name="DW_UPDATE_USER_ID_STR"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="15"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_STP]"
+                          name="Copy of ID_STP"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_STP]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_CABANG]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          length="20"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_CABANG]"
+                          name="Copy of ID_CABANG"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_CABANG]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of MASA_PJK]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of MASA_PJK]"
+                          name="Copy of MASA_PJK"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[MASA_PJK]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of THN_PJK]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of THN_PJK]"
+                          name="Copy of THN_PJK"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[THN_PJK]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_KWJB]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_KWJB]"
+                          name="Copy of ID_KWJB"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KWJB]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of TGL_DOKUMEN]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of TGL_DOKUMEN]"
+                          name="Copy of TGL_DOKUMEN"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[TGL_DOKUMEN]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_KEPATUHAN]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_KEPATUHAN]"
+                          name="Copy of ID_KEPATUHAN"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KEPATUHAN]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_MASALAH]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="IgnoreFailure"
+                          length="40"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_MASALAH]"
+                          name="Copy of ID_MASALAH"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_MASALAH]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of NILAI_TRANSAKSI]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of NILAI_TRANSAKSI]"
+                          name="Copy of NILAI_TRANSAKSI"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Specifies the input column used as the source of data for the conversion."
+                              name="SourceInputColumnLineageID">#{Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_TRANSAKSI]}</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Data Conversion Error Output"
+                      synchronousInputId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\KP_STP\KP_STP\KP_STP"
+                  componentClassID="Attunity.SSISOraSrc"
+                  contactInfo="Oracle Source;Microsoft Connector for Oracle by Attunity; Attunity Ltd.; All Rights Reserved; http://www.attunity.com;5"
+                  description="Microsoft Oracle Source Component by Attunity"
+                  name="KP_STP"
+                  usesDispositions="true"
+                  version="5">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="The name of the table to be fetched."
+                      expressionType="Notify"
+                      name="TableName"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      expressionType="Notify"
+                      name="SqlCommand">SELECT ID_STP, ID_CABANG, ID_JNS_PJK, NOMOR_STP, TGL_DOKUMEN, MASA_PJK, case when THN_PJK &gt; (select extract(year from sysdate) from dual)  then 9999
+         when THN_PJK &lt; 1945 then 0
+        else THN_PJK end THN_PJK, FG_STATUS, NILAI_TRANSAKSI, CURRENCY_CODE, ROUND(NILAI_KB,2) NILAI_KB, CURRENCY_KB, ID_KEPATUHAN, ID_MASALAH, CREATION_DATE, CREATED_BY, LAST_UPDATE_DATE, LAST_UPDATED_BY, LAST_UPDATE_LOGIN, ID_KWJB, KETERANGAN, ROUND(NILAI_ANGSURAN,2) NILAI_ANGSURAN, ROUND(NILAI_BAYAR,2)  NILAI_BAYAR, CURRENCY_ANGSURAN, CURRENCY_BAYAR, ATTRIBUTE1, to_char(SYSDATE,'YYYY-MM-DD') DW_START_DATE, '9999-12-31' DW_END_DATE, '0' DW_RECORD_DELETED_FLAG,  'MIGRASI-INC-CORE-PNG' DW_PROCESS_ID, 'MIGRASI-CORE-INC' DW_USER_ID, NULL DW_UPDATE_PROCESS_ID, NULL DW_UPDATE_USER_ID FROM KP_STP WHERE LAST_UPDATE_DATE between TO_DATE('', 'YYYY-MM-DD HH24:MI:SS') + 1/(24*60*60) AND TRUNC(SYSDATE) - 1/(24*60*60)</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of rows fetched in a batch."
+                      expressionType="Notify"
+                      name="BatchSize">100</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Number of pre-fetched rows."
+                      expressionType="Notify"
+                      name="PrefetchCount">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines the chunk size allocation for LOB columns"
+                      expressionType="Notify"
+                      name="LobChunkSize">32768</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">1</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\KP_STP\KP_STP\KP_STP.Connections[MSOraConnection]"
+                      connectionManagerID="{962C1EAB-5667-46F3-9AA8-ECA3183CC392}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[ORA_SIDJPREP]"
+                      description="The Oracle runtime connection"
+                      name="MSOraConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output]"
+                      errorRowDisposition="FailComponent"
+                      name="Oracle Source Output"
+                      truncationRowDisposition="FailComponent">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_STP]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_STP]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_STP]"
+                          name="ID_STP"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_JNS_PJK]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_JNS_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_JNS_PJK]"
+                          name="ID_JNS_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_CABANG]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_CABANG]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_CABANG]"
+                          name="ID_CABANG"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NOMOR_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NOMOR_STP]"
+                          length="50"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NOMOR_STP]"
+                          name="NOMOR_STP" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[TGL_DOKUMEN]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[TGL_DOKUMEN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[TGL_DOKUMEN]"
+                          name="TGL_DOKUMEN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[MASA_PJK]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[MASA_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[MASA_PJK]"
+                          name="MASA_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[THN_PJK]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[THN_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[THN_PJK]"
+                          name="THN_PJK"
+                          precision="4" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[FG_STATUS]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[FG_STATUS]"
+                          length="20"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[FG_STATUS]"
+                          name="FG_STATUS" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_TRANSAKSI]"
+                          dataType="numeric"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_TRANSAKSI]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_TRANSAKSI]"
+                          name="NILAI_TRANSAKSI"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_CODE]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_CODE]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_CODE]"
+                          name="CURRENCY_CODE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_KB]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_KB]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_KB]"
+                          name="NILAI_KB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_KB]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_KB]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_KB]"
+                          name="CURRENCY_KB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KEPATUHAN]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_KEPATUHAN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KEPATUHAN]"
+                          name="ID_KEPATUHAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_MASALAH]"
+                          dataType="numeric"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_MASALAH]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_MASALAH]"
+                          name="ID_MASALAH"
+                          precision="38" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[KETERANGAN]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[KETERANGAN]"
+                          length="255"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[KETERANGAN]"
+                          name="KETERANGAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATION_DATE]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CREATION_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATION_DATE]"
+                          name="CREATION_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATED_BY]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CREATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CREATED_BY]"
+                          name="CREATED_BY" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_DATE]"
+                          name="LAST_UPDATE_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATED_BY]"
+                          name="LAST_UPDATED_BY" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_LOGIN]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_LOGIN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[LAST_UPDATE_LOGIN]"
+                          name="LAST_UPDATE_LOGIN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KWJB]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_KWJB]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ID_KWJB]"
+                          name="ID_KWJB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_ANGSURAN]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_ANGSURAN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_ANGSURAN]"
+                          name="NILAI_ANGSURAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_BAYAR]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_BAYAR]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_BAYAR]"
+                          name="NILAI_BAYAR" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_ANGSURAN]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_ANGSURAN]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_ANGSURAN]"
+                          name="CURRENCY_ANGSURAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_BAYAR]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_BAYAR]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_BAYAR]"
+                          name="CURRENCY_BAYAR" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ATTRIBUTE1]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ATTRIBUTE1]"
+                          length="255"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ATTRIBUTE1]"
+                          name="ATTRIBUTE1" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_START_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_START_DATE]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_START_DATE]"
+                          name="DW_START_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_END_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_END_DATE]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_END_DATE]"
+                          name="DW_END_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          length="1"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_USER_ID]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_UPDATE_USER_ID]"
+                          name="DW_UPDATE_USER_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_PROCESS_ID]"
+                          length="20"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_PROCESS_ID]"
+                          name="DW_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Insert"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_USER_ID]"
+                          length="16"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_USER_ID]"
+                          name="DW_USER_ID" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_STP]"
+                          dataType="r8"
+                          name="ID_STP" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_CABANG]"
+                          dataType="r8"
+                          name="ID_CABANG" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_JNS_PJK]"
+                          dataType="r8"
+                          name="ID_JNS_PJK" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NOMOR_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="NOMOR_STP" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[TGL_DOKUMEN]"
+                          dataType="dbTimeStamp"
+                          name="TGL_DOKUMEN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[MASA_PJK]"
+                          dataType="r8"
+                          name="MASA_PJK" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[THN_PJK]"
+                          dataType="r8"
+                          name="THN_PJK" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[FG_STATUS]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="FG_STATUS" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_TRANSAKSI]"
+                          dataType="r8"
+                          name="NILAI_TRANSAKSI" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_CODE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_CODE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_KB]"
+                          dataType="r8"
+                          name="NILAI_KB" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_KB]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_KB" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_KEPATUHAN]"
+                          dataType="r8"
+                          name="ID_KEPATUHAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_MASALAH]"
+                          dataType="r8"
+                          name="ID_MASALAH" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CREATION_DATE]"
+                          dataType="dbTimeStamp"
+                          name="CREATION_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CREATED_BY]"
+                          dataType="r8"
+                          name="CREATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_DATE]"
+                          dataType="dbTimeStamp"
+                          name="LAST_UPDATE_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATED_BY]"
+                          dataType="r8"
+                          name="LAST_UPDATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_LOGIN]"
+                          dataType="r8"
+                          name="LAST_UPDATE_LOGIN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_KWJB]"
+                          dataType="r8"
+                          name="ID_KWJB" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[KETERANGAN]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="KETERANGAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_ANGSURAN]"
+                          dataType="r8"
+                          name="NILAI_ANGSURAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_BAYAR]"
+                          dataType="r8"
+                          name="NILAI_BAYAR" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_ANGSURAN]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_ANGSURAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_BAYAR]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_BAYAR" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ATTRIBUTE1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="ATTRIBUTE1" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_START_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="DW_START_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_END_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="DW_END_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="DW_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="16"
+                          name="DW_USER_ID" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          name="DW_UPDATE_USER_ID" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output]"
+                      isErrorOut="true"
+                      name="Oracle Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_STP]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_STP]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_STP]"
+                          name="ID_STP" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NOMOR_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NOMOR_STP]"
+                          length="50"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NOMOR_STP]"
+                          name="NOMOR_STP" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[TGL_DOKUMEN]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[TGL_DOKUMEN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[TGL_DOKUMEN]"
+                          name="TGL_DOKUMEN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_JNS_PJK]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_JNS_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_JNS_PJK]"
+                          name="ID_JNS_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_CABANG]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_CABANG]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_CABANG]"
+                          name="ID_CABANG" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[FG_STATUS]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[FG_STATUS]"
+                          length="20"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[FG_STATUS]"
+                          name="FG_STATUS" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_TRANSAKSI]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_TRANSAKSI]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_TRANSAKSI]"
+                          name="NILAI_TRANSAKSI" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[MASA_PJK]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[MASA_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[MASA_PJK]"
+                          name="MASA_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_KB]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_KB]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_KB]"
+                          name="NILAI_KB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_KB]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_KB]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_KB]"
+                          name="CURRENCY_KB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_KEPATUHAN]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_KEPATUHAN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_KEPATUHAN]"
+                          name="ID_KEPATUHAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_MASALAH]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_MASALAH]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_MASALAH]"
+                          name="ID_MASALAH" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[THN_PJK]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[THN_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[THN_PJK]"
+                          name="THN_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_CODE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_CODE]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_CODE]"
+                          name="CURRENCY_CODE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[KETERANGAN]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[KETERANGAN]"
+                          length="255"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[KETERANGAN]"
+                          name="KETERANGAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CREATION_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CREATION_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CREATION_DATE]"
+                          name="CREATION_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CREATED_BY]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CREATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CREATED_BY]"
+                          name="CREATED_BY" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[LAST_UPDATE_DATE]"
+                          dataType="dbTimeStamp"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[LAST_UPDATE_DATE]"
+                          name="LAST_UPDATE_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[LAST_UPDATED_BY]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[LAST_UPDATED_BY]"
+                          name="LAST_UPDATED_BY" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_ANGSURAN]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_ANGSURAN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_ANGSURAN]"
+                          name="NILAI_ANGSURAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_BAYAR]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[NILAI_BAYAR]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[NILAI_BAYAR]"
+                          name="NILAI_BAYAR" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_ANGSURAN]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_ANGSURAN]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_ANGSURAN]"
+                          name="CURRENCY_ANGSURAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_BAYAR]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[CURRENCY_BAYAR]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[CURRENCY_BAYAR]"
+                          name="CURRENCY_BAYAR" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ATTRIBUTE1]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ATTRIBUTE1]"
+                          length="255"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ATTRIBUTE1]"
+                          name="ATTRIBUTE1" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[LAST_UPDATE_LOGIN]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[LAST_UPDATE_LOGIN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[LAST_UPDATE_LOGIN]"
+                          name="LAST_UPDATE_LOGIN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_KWJB]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[ID_KWJB]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[ID_KWJB]"
+                          name="ID_KWJB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_START_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_START_DATE]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_START_DATE]"
+                          name="DW_START_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_END_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_END_DATE]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_END_DATE]"
+                          name="DW_END_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          length="1"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_UPDATE_USER_ID]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_UPDATE_USER_ID]"
+                          name="DW_UPDATE_USER_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_PROCESS_ID]"
+                          length="20"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_PROCESS_ID]"
+                          name="DW_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].ExternalColumns[DW_USER_ID]"
+                          length="16"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Error Output].Columns[DW_USER_ID]"
+                          name="DW_USER_ID" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\KP_STP\KP_STP\Teradata Destination"
+                  componentClassID="Attunity.SSISTeraDst"
+                  contactInfo="Teradata Destination;Microsoft Connector for Teradata by Attunity; Attunity Ltd.; All Rights Reserved; http://www.attunity.com;5"
+                  description="Microsoft Teradata Destination Component by Attunity"
+                  name="Teradata Destination"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="5">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Apply fast load"
+                      name="FastLoad">true</property>
+                    <property
+                      dataType="System.String"
+                      description="Destination table"
+                      expressionType="Notify"
+                      name="TableName">DBTMP_SIDJP.KP_STP_I</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Data transfer block size."
+                      expressionType="Notify"
+                      name="BlockSize">64330</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="SQL requests, responses and data encryption."
+                      expressionType="Notify"
+                      name="DataEncryption">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Minimum number of sessions required."
+                      expressionType="Notify"
+                      name="MinSessions">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum number of sessions to log on."
+                      expressionType="Notify"
+                      name="MaxSessions">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of hours to continue trying to log on when the maximum number of load jobs is already running on the Teradata Database."
+                      expressionType="Notify"
+                      name="TenacityHours">4</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of minutes to pause before retrying to log on when the maximum number of load jobs is already running on the Teradata Database."
+                      expressionType="Notify"
+                      name="TenacitySleep">6</property>
+                    <property
+                      dataType="System.String"
+                      description="A specifier used for naming error and log tables."
+                      expressionType="Notify"
+                      name="ErrorTableName"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum errors allowed."
+                      expressionType="Notify"
+                      name="MaxErrors">0</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Always drop error table(s)."
+                      expressionType="Notify"
+                      name="AlwaysDropErrorTable">true</property>
+                    <property
+                      dataType="System.String"
+                      description="A trace file name. Setting a value for this property enables TPT detailed tracing."
+                      expressionType="Notify"
+                      name="DetailedTracingFile"></property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Use maximal character buffers allocation factor. Used when 'Export Width Table ID' = 'Maximum Defaults'."
+                      expressionType="Notify"
+                      name="ExtendedStringColumnsAllocation">false</property>
+                    <property
+                      dataType="System.String"
+                      description="A user-defined query band expression."
+                      expressionType="Notify"
+                      name="QueryBandSessionInfo"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="The output buffer size (KB) used for sending Load parcels."
+                      expressionType="Notify"
+                      name="BufferSize">64</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates which type of Load method is used. True stands for ‘Process Buffered Rows’. False indicates ‘Process Row By Row’."
+                      expressionType="Notify"
+                      name="BufferMode">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum size of a data buffer when ‘Buffer mode’ is applied. Value must be large enough to hold at least one data row (including 8 overhead bytes per row at most)."
+                      expressionType="Notify"
+                      name="BufferMaxSize">64260</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of request buffers."
+                      expressionType="Notify"
+                      name="Buffers">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Array support option for DMLGroups."
+                      expressionType="Notify"
+                      name="ArraySupport">true</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Use robust restart logic for recovery and restart operations."
+                      expressionType="Notify"
+                      name="Robust">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the number of statements to pack into a multiple-statement request."
+                      expressionType="Notify"
+                      name="Pack">20</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Triggers the Stream driver to dynamically determine the maximum possible pack factor for the current Stream job."
+                      expressionType="Notify"
+                      name="PackMaximum">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Overrides the normal replication services controls."
+                      name="ReplicationOverride"
+                      typeConverter="ReplicationOverride">2</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the types of diagnostic messages written by each instance of the driver to an external log file. The diagnostic trace function provides more detailed information (including the version number) in the log file to aid in problem tracking and diagnosis."
+                      name="DetailedTracingLevel"
+                      typeConverter="DetailedTracingLevel">1</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\KP_STP\KP_STP\Teradata Destination.Connections[MSTeraConnection]"
+                      connectionManagerID="{928F4B84-3B3F-482F-B553-04353D91075A}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[tera_conn_dev]"
+                      description="The Teradata runtime connection"
+                      name="MSTeraConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="Teradata Destination Input"
+                      truncationRowDisposition="FailComponent">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[NOMOR_STP]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="NOMOR_STP"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NOMOR_STP]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NOMOR_STP]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[FG_STATUS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="FG_STATUS"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[FG_STATUS]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[FG_STATUS]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[CURRENCY_CODE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="CURRENCY_CODE"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_CODE]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_CODE]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[NILAI_KB]"
+                          cachedDataType="r8"
+                          cachedName="NILAI_KB"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_KB]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_KB]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[CURRENCY_KB]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="CURRENCY_KB"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_KB]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_KB]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[KETERANGAN]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="KETERANGAN"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[KETERANGAN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[KETERANGAN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[NILAI_ANGSURAN]"
+                          cachedDataType="r8"
+                          cachedName="NILAI_ANGSURAN"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_ANGSURAN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_ANGSURAN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[NILAI_BAYAR]"
+                          cachedDataType="r8"
+                          cachedName="NILAI_BAYAR"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_BAYAR]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[NILAI_BAYAR]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[CURRENCY_ANGSURAN]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="CURRENCY_ANGSURAN"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_ANGSURAN]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_ANGSURAN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[CURRENCY_BAYAR]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="CURRENCY_BAYAR"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_BAYAR]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[CURRENCY_BAYAR]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[ATTRIBUTE1]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="ATTRIBUTE1"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ATTRIBUTE1]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[ATTRIBUTE1]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[DW_PROCESS_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="DW_PROCESS_ID"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_PROCESS_ID]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_PROCESS_ID]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[DW_USER_ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="16"
+                          cachedName="DW_USER_ID"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_USER_ID]"
+                          lineageId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output].Columns[DW_USER_ID]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[DW_START_DATE_DT]"
+                          cachedDataType="dbDate"
+                          cachedName="DW_START_DATE_DT"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_START_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_START_DATE_DT]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[DW_END_DATE_DT]"
+                          cachedDataType="dbDate"
+                          cachedName="DW_END_DATE_DT"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_END_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_END_DATE_DT]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[DW_RECORD_DELETED_FLAG_I1]"
+                          cachedDataType="i1"
+                          cachedName="DW_RECORD_DELETED_FLAG_I1"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_RECORD_DELETED_FLAG_I1]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[DW_UPDATE_PROCESS_ID_STR]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="DW_UPDATE_PROCESS_ID_STR"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_PROCESS_ID_STR]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[DW_UPDATE_USER_ID_STR]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="18"
+                          cachedName="DW_UPDATE_USER_ID_STR"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_USER_ID]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[DW_UPDATE_USER_ID_STR]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of ID_STP]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="15"
+                          cachedName="Copy of ID_STP"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_STP]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_STP]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of ID_CABANG]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="Copy of ID_CABANG"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_CABANG]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_CABANG]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[ID_JNS_PJK_I1]"
+                          cachedDataType="i2"
+                          cachedName="ID_JNS_PJK_I1"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_JNS_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[ID_JNS_PJK_I1]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[CREATION_DATE_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="26"
+                          cachedName="CREATION_DATE_TS"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CREATION_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[CREATION_DATE_TS]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[LAST_UPDATE_DATE_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="26"
+                          cachedName="LAST_UPDATE_DATE_TS"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_DATE_TS]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[CREATED_BY_I4]"
+                          cachedDataType="i4"
+                          cachedName="CREATED_BY_I4"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CREATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[CREATED_BY_I4]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[LAST_UPDATED_BY_I4]"
+                          cachedDataType="i4"
+                          cachedName="LAST_UPDATED_BY_I4"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATED_BY_I4]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[LAST_UPDATE_LOGIN_I4]"
+                          cachedDataType="i4"
+                          cachedName="LAST_UPDATE_LOGIN_I4"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_LOGIN]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[LAST_UPDATE_LOGIN_I4]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of ID_KWJB]"
+                          cachedDataType="i2"
+                          cachedName="Copy of ID_KWJB"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_KWJB]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_KWJB]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of MASA_PJK]"
+                          cachedDataType="i2"
+                          cachedName="Copy of MASA_PJK"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[MASA_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of MASA_PJK]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of THN_PJK]"
+                          cachedDataType="i2"
+                          cachedName="Copy of THN_PJK"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[THN_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of THN_PJK]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of TGL_DOKUMEN]"
+                          cachedDataType="dbDate"
+                          cachedName="Copy of TGL_DOKUMEN"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[TGL_DOKUMEN]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of TGL_DOKUMEN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of ID_MASALAH]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="40"
+                          cachedName="Copy of ID_MASALAH"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_MASALAH]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_MASALAH]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of ID_KEPATUHAN]"
+                          cachedDataType="i2"
+                          cachedName="Copy of ID_KEPATUHAN"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_KEPATUHAN]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ID_KEPATUHAN]" />
+                        <inputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].Columns[Copy of NILAI_TRANSAKSI]"
+                          cachedDataType="r8"
+                          cachedName="Copy of NILAI_TRANSAKSI"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_TRANSAKSI]"
+                          lineageId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of NILAI_TRANSAKSI]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="15"
+                          name="ID_STP" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_CABANG]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="ID_CABANG" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_JNS_PJK]"
+                          dataType="i2"
+                          name="ID_JNS_PJK" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NOMOR_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="NOMOR_STP" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[TGL_DOKUMEN]"
+                          dataType="dbDate"
+                          name="TGL_DOKUMEN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[MASA_PJK]"
+                          dataType="i2"
+                          name="MASA_PJK" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[THN_PJK]"
+                          dataType="i2"
+                          name="THN_PJK" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[FG_STATUS]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="FG_STATUS" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_TRANSAKSI]"
+                          dataType="r8"
+                          name="NILAI_TRANSAKSI" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_CODE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_CODE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_KB]"
+                          dataType="r8"
+                          name="NILAI_KB" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_KB]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_KB" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_KEPATUHAN]"
+                          dataType="i2"
+                          name="ID_KEPATUHAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_MASALAH]"
+                          codePage="1252"
+                          dataType="str"
+                          length="40"
+                          name="ID_MASALAH" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CREATION_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="26"
+                          name="CREATION_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CREATED_BY]"
+                          dataType="i4"
+                          name="CREATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="26"
+                          name="LAST_UPDATE_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATED_BY]"
+                          dataType="i4"
+                          name="LAST_UPDATED_BY" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_LOGIN]"
+                          dataType="i4"
+                          name="LAST_UPDATE_LOGIN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_KWJB]"
+                          dataType="i2"
+                          name="ID_KWJB" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[KETERANGAN]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="KETERANGAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_ANGSURAN]"
+                          dataType="r8"
+                          name="NILAI_ANGSURAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_BAYAR]"
+                          dataType="r8"
+                          name="NILAI_BAYAR" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_ANGSURAN]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_ANGSURAN" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_BAYAR]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CURRENCY_BAYAR" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ATTRIBUTE1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="ATTRIBUTE1" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_START_DATE]"
+                          dataType="dbDate"
+                          name="DW_START_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_END_DATE]"
+                          dataType="dbDate"
+                          name="DW_END_DATE" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          dataType="i1"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="DW_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="18"
+                          name="DW_USER_ID" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <externalMetadataColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="18"
+                          name="DW_UPDATE_USER_ID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output]"
+                      isErrorOut="true"
+                      name="Teradata Destination Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_STP]"
+                          length="15"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_STP]"
+                          name="ID_STP" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_CABANG]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_CABANG]"
+                          length="20"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_CABANG]"
+                          name="ID_CABANG" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_JNS_PJK]"
+                          dataType="i2"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_JNS_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_JNS_PJK]"
+                          name="ID_JNS_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NOMOR_STP]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NOMOR_STP]"
+                          length="50"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NOMOR_STP]"
+                          name="NOMOR_STP" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[TGL_DOKUMEN]"
+                          dataType="dbDate"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[TGL_DOKUMEN]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[TGL_DOKUMEN]"
+                          name="TGL_DOKUMEN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[MASA_PJK]"
+                          dataType="i2"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[MASA_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[MASA_PJK]"
+                          name="MASA_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[THN_PJK]"
+                          dataType="i2"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[THN_PJK]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[THN_PJK]"
+                          name="THN_PJK" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[FG_STATUS]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[FG_STATUS]"
+                          length="20"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[FG_STATUS]"
+                          name="FG_STATUS" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_TRANSAKSI]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_TRANSAKSI]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_TRANSAKSI]"
+                          name="NILAI_TRANSAKSI" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_CODE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_CODE]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_CODE]"
+                          name="CURRENCY_CODE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_KB]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_KB]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_KB]"
+                          name="NILAI_KB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_KB]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_KB]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_KB]"
+                          name="CURRENCY_KB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_KEPATUHAN]"
+                          dataType="i2"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_KEPATUHAN]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_KEPATUHAN]"
+                          name="ID_KEPATUHAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_MASALAH]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_MASALAH]"
+                          length="18"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_MASALAH]"
+                          name="ID_MASALAH" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CREATION_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CREATION_DATE]"
+                          length="26"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CREATION_DATE]"
+                          name="CREATION_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CREATED_BY]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CREATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CREATED_BY]"
+                          name="CREATED_BY" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATE_DATE]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_DATE]"
+                          length="26"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATE_DATE]"
+                          name="LAST_UPDATE_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATED_BY]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATED_BY]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATED_BY]"
+                          name="LAST_UPDATED_BY" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATE_LOGIN]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[LAST_UPDATE_LOGIN]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[LAST_UPDATE_LOGIN]"
+                          name="LAST_UPDATE_LOGIN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_KWJB]"
+                          dataType="i2"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ID_KWJB]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ID_KWJB]"
+                          name="ID_KWJB" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[KETERANGAN]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[KETERANGAN]"
+                          length="255"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[KETERANGAN]"
+                          name="KETERANGAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_ANGSURAN]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_ANGSURAN]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_ANGSURAN]"
+                          name="NILAI_ANGSURAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_BAYAR]"
+                          dataType="r8"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[NILAI_BAYAR]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[NILAI_BAYAR]"
+                          name="NILAI_BAYAR" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_ANGSURAN]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_ANGSURAN]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_ANGSURAN]"
+                          name="CURRENCY_ANGSURAN" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_BAYAR]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[CURRENCY_BAYAR]"
+                          length="10"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[CURRENCY_BAYAR]"
+                          name="CURRENCY_BAYAR" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ATTRIBUTE1]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[ATTRIBUTE1]"
+                          length="255"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ATTRIBUTE1]"
+                          name="ATTRIBUTE1" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_START_DATE]"
+                          dataType="dbDate"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_START_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_START_DATE]"
+                          name="DW_START_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_END_DATE]"
+                          dataType="dbDate"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_END_DATE]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_END_DATE]"
+                          name="DW_END_DATE" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          dataType="i1"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_RECORD_DELETED_FLAG]"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_RECORD_DELETED_FLAG]"
+                          name="DW_RECORD_DELETED_FLAG" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_PROCESS_ID]"
+                          length="30"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_PROCESS_ID]"
+                          name="DW_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_USER_ID]"
+                          length="18"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_USER_ID]"
+                          name="DW_USER_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_PROCESS_ID]"
+                          length="30"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_PROCESS_ID]"
+                          name="DW_UPDATE_PROCESS_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_USER_ID]"
+                          codePage="1252"
+                          dataType="str"
+                          externalMetadataColumnId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input].ExternalColumns[DW_UPDATE_USER_ID]"
+                          length="18"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[DW_UPDATE_USER_ID]"
+                          name="DW_UPDATE_USER_ID" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\KP_STP\KP_STP\Teradata Destination.Outputs[Teradata Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\KP_STP\KP_STP.Paths[Data Conversion Output]"
+                  endId="Package\KP_STP\KP_STP\Teradata Destination.Inputs[Teradata Destination Input]"
+                  name="Data Conversion Output"
+                  startId="Package\KP_STP\KP_STP\Data Conversion.Outputs[Data Conversion Output]" />
+                <path
+                  refId="Package\KP_STP\KP_STP.Paths[Oracle Source Output]"
+                  endId="Package\KP_STP\KP_STP\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Oracle Source Output"
+                  startId="Package\KP_STP\KP_STP\KP_STP.Outputs[Oracle Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\KP_STP\Log Initial"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{EB02812A-7D8B-4F9E-B5A2-C69872756549}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Log Initial"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::LogInit"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LogID" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\KP_STP\Log Success"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Log Initial"
+          DTS:DTSID="{1D31474D-274A-4F42-AED2-8A40583B21F5}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Log Success"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{48E9D7A1-56DF-4D52-9ABC-44B8BDD43D60}"
+              SQLTask:SqlStmtSourceType="Variable"
+              SQLTask:SqlStatementSource="User::LogEnd" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\KP_STP.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{580686DB-1FB0-45DD-A4D7-3F70CA23731A}"
+          DTS:From="Package\KP_STP\Log Initial"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\KP_STP\Get Last Update Date" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\KP_STP.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{2A281243-0DA5-46DE-9B30-8CF65BDC9A3A}"
+          DTS:From="Package\KP_STP\CLEAN TABLE"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\KP_STP\KP_STP" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\KP_STP.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{189A5D89-CC61-4B70-8F22-AA3E30E8D03E}"
+          DTS:From="Package\KP_STP\Count Row Source"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\KP_STP\CLEAN TABLE" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\KP_STP.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{95BDF57B-F975-45A0-9D77-567DDA92E52F}"
+          DTS:From="Package\KP_STP\INC_PROCESS"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\KP_STP\Log Success" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\KP_STP.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{3015C85D-FF54-45BB-81DB-325A35CC4AEE}"
+          DTS:From="Package\KP_STP\Get Last Update Date"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\KP_STP\Count Row Source" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\KP_STP.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{8FA55223-85B0-4AD6-87A0-AC4DF9E4EB99}"
+          DTS:From="Package\KP_STP\KP_STP"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\KP_STP\INC_PROCESS" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="144,42"
+          Id="Package\KP_STP\CLEAN TABLE"
+          TopLeft="346,131" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\KP_STP\Count Row Source"
+          TopLeft="220.75,31.5" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\KP_STP\Get Last Update Date"
+          TopLeft="89.0000000000001,129.75" />
+        <NodeLayout
+          Size="147,42"
+          Id="Package\KP_STP\INC_PROCESS"
+          TopLeft="621,119.25" />
+        <NodeLayout
+          Size="126,42"
+          Id="Package\KP_STP\Log Initial"
+          TopLeft="27.25,42" />
+        <NodeLayout
+          Size="136,42"
+          Id="Package\KP_STP\Log Success"
+          TopLeft="711.5,29" />
+        <EdgeLayout
+          Id="Package\KP_STP.PrecedenceConstraints[Constraint]"
+          TopLeft="90.25,84">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="88.7500000000001,45.75"
+              Start="0,0"
+              End="88.7500000000001,38.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.875" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.875"
+                    Point2="0,22.875"
+                    Point3="4,22.875" />
+                  <mssgle:LineSegment
+                    End="84.7500000000001,22.875" />
+                  <mssgle:CubicBezierSegment
+                    Point1="84.7500000000001,22.875"
+                    Point2="88.7500000000001,22.875"
+                    Point3="88.7500000000001,26.875" />
+                  <mssgle:LineSegment
+                    End="88.7500000000001,38.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KP_STP.PrecedenceConstraints[Constraint 2]"
+          TopLeft="330.083333333333,73.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="87.9166666666667,57.5"
+              Start="0,0"
+              End="87.9166666666667,50">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.3293556085919" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.3293556085919"
+                    Point2="0,23.3293556085919"
+                    Point3="4,23.3293556085919" />
+                  <mssgle:LineSegment
+                    End="83.9166666666667,23.3293556085919" />
+                  <mssgle:CubicBezierSegment
+                    Point1="83.9166666666667,23.3293556085919"
+                    Point2="87.9166666666667,23.3293556085919"
+                    Point3="87.9166666666667,27.3293556085919" />
+                  <mssgle:LineSegment
+                    End="87.9166666666667,50" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KP_STP.PrecedenceConstraints[Constraint 3]"
+          TopLeft="717.666666666667,119.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="61.8333333333334,-48.25"
+              Start="0,0"
+              End="61.8333333333334,-40.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-15.6117092866756" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-15.6117092866756"
+                    Point2="0,-19.6117092866756"
+                    Point3="4,-19.6117092866756" />
+                  <mssgle:LineSegment
+                    End="57.8333333333334,-19.6117092866756" />
+                  <mssgle:CubicBezierSegment
+                    Point1="57.8333333333334,-19.6117092866756"
+                    Point2="61.8333333333334,-19.6117092866756"
+                    Point3="61.8333333333334,-23.6117092866756" />
+                  <mssgle:LineSegment
+                    End="61.8333333333334,-40.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KP_STP.PrecedenceConstraints[Constraint 4]"
+          TopLeft="207.666666666667,129.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="69.7499999999999,-56.25"
+              Start="0,0"
+              End="69.7499999999999,-48.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-24.0992411356797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-24.0992411356797"
+                    Point2="0,-28.0992411356797"
+                    Point3="4,-28.0992411356797" />
+                  <mssgle:LineSegment
+                    End="65.7499999999999,-28.0992411356797" />
+                  <mssgle:CubicBezierSegment
+                    Point1="65.7499999999999,-28.0992411356797"
+                    Point2="69.7499999999999,-28.0992411356797"
+                    Point3="69.7499999999999,-32.0992411356797" />
+                  <mssgle:LineSegment
+                    End="69.7499999999999,-48.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="115,42"
+          Id="Package\KP_STP\KP_STP"
+          TopLeft="498.25,23" />
+        <EdgeLayout
+          Id="Package\KP_STP.PrecedenceConstraints[Constraint 1]"
+          TopLeft="440.666666666667,131">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="115.083333333333,-66"
+              Start="0,0"
+              End="115.083333333333,-58.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-22.8351648351649" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-22.8351648351649"
+                    Point2="0,-26.8351648351649"
+                    Point3="4,-26.8351648351649" />
+                  <mssgle:LineSegment
+                    End="111.083333333333,-26.8351648351649" />
+                  <mssgle:CubicBezierSegment
+                    Point1="111.083333333333,-26.8351648351649"
+                    Point2="115.083333333333,-26.8351648351649"
+                    Point3="115.083333333333,-30.8351648351649" />
+                  <mssgle:LineSegment
+                    End="115.083333333333,-58.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KP_STP.PrecedenceConstraints[Constraint 5]"
+          TopLeft="573.583333333333,65">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="97.75,54.25"
+              Start="0,0"
+              End="97.75,46.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.2246041080957" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.2246041080957"
+                    Point2="0,27.2246041080957"
+                    Point3="4,27.2246041080957" />
+                  <mssgle:LineSegment
+                    End="93.75,27.2246041080957" />
+                  <mssgle:CubicBezierSegment
+                    Point1="93.75,27.2246041080957"
+                    Point2="97.75,27.2246041080957"
+                    Point3="97.75,31.2246041080957" />
+                  <mssgle:LineSegment
+                    End="97.75,46.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="866,228"
+          Size="866,271"
+          Id="Package\KP_STP"
+          TopLeft="47.166666666667,29.6666666666667" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\KP_STP\KP_STP">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="177,42"
+          Id="Package\KP_STP\KP_STP\Teradata Destination"
+          TopLeft="569,122" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\KP_STP\KP_STP\Data Conversion"
+          TopLeft="314,74" />
+        <NodeLayout
+          Size="115,42"
+          Id="Package\KP_STP\KP_STP\KP_STP"
+          TopLeft="54,68" />
+        <EdgeLayout
+          Id="Package\KP_STP\KP_STP.Paths[Oracle Source Output]"
+          TopLeft="169,92">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="145,0"
+              Start="0,0"
+              End="137.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="137.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KP_STP\KP_STP.Paths[Data Conversion Output]"
+          TopLeft="470,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="99,48"
+              Start="0,0"
+              End="91.5,48">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="45.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="45.5,0"
+                    Point2="49.5,0"
+                    Point3="49.5,4" />
+                  <mssgle:LineSegment
+                    End="49.5,44" />
+                  <mssgle:CubicBezierSegment
+                    Point1="49.5,44"
+                    Point2="49.5,48"
+                    Point3="53.5,48" />
+                  <mssgle:LineSegment
+                    End="91.5,48" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\KP_STP\KP_STP\Teradata Destination">
+    <Properties>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

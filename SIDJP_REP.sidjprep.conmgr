@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="SIDJP_REP.sidjprep"
+  DTS:DTSID="{80A77D78-7913-467D-8C1B-821972F58A02}"
+  DTS:CreationName="ADO.NET:System.Data.OracleClient.OracleConnection, System.Data.OracleClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=SIDJP_REP;User ID=sidjprep;Persist Security Info=True;Unicode=True;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAI0NUpiz2TUqvSNSdYpH/vQAAAAACAAAAAAADZgAAwAAAABAAAADnqB9+FrIz3ErPTfmpy8H0AAAAAASAAACgAAAAEAAAAL4WOZ0O+y77tHASmBhBQSt4AAAAVRX73JiWQKd4KtA3NMMuceGkN7cRtS80XBoZLEbaMdIIZ1QhhUvfQ5nCQQP7w0A/g6A7VL/T7C21koIjrFrfOf1yA54GI+DCjtnImDpvlb8Q0M6N8cRAQdUKZhmCW57sytBK5uGxtbUrnR99zTV9NIXZjQHcSpprFAAAAK4PAtEvMHHjOYAmZmzSFQwsWRTT</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>
